@@ -1,13 +1,15 @@
-// script.js
-
 let currentIndex = 0;
 const slides = document.querySelectorAll(".slide");
-const slideIntervalTime = 3000; // 3 ثواني
+const dots = document.querySelectorAll(".dot");
 let slideInterval;
 
 function showSlide(index) {
   slides.forEach((slide, i) => {
     slide.classList.toggle("active", i === index);
+  });
+
+  dots.forEach((dot, i) => {
+    dot.classList.toggle("active", i === index);
   });
 }
 
@@ -21,15 +23,29 @@ function prevSlide() {
   showSlide(currentIndex);
 }
 
+function setCurrentSlide(index) {
+  currentIndex = index;
+  showSlide(currentIndex);
+  resetSlider();
+}
+
 function startSlider() {
-  slideInterval = setInterval(nextSlide, slideIntervalTime);
+  slideInterval = setInterval(nextSlide, 3000);
 }
 
 function stopSlider() {
   clearInterval(slideInterval);
 }
 
-document.getElementById("slider").addEventListener("mouseenter", stopSlider);
+function resetSlider() {
+  stopSlider();
+  startSlider();
+}
+
+document.getElementById("slider").addEventListener("mouseover", stopSlider);
 document.getElementById("slider").addEventListener("mouseleave", startSlider);
 
-window.onload = startSlider;
+window.onload = () => {
+  showSlide(currentIndex); 
+  startSlider();
+};
